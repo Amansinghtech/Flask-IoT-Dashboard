@@ -127,9 +127,9 @@ class user:
             print(e)
 
 #testing side for the class
-test = user("hellboy", "hello world")
-test.get_details()
-print(test.get_devices())
+# test = user("hellboy", "hello world")
+# test.get_details()
+# print(test.get_devices())
 # print(test.dev_info("ARMS1112"))
 # print(test.field_values('Rosegarden'))
-print(test.device_values("Rosegarden", "ARMS12012"))
+# print(test.device_values("Rosegarden", "ARMS12012"))
