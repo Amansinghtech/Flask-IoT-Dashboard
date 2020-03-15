@@ -98,12 +98,38 @@ class user:
             print('[ERROR!]')
             print(e)
     
-    def field_values(self):
+    def field_values(self, fieldname):
         #here we will access all the values of devices according to time
-        pass
+        try:
+            if self.authenticated:
+                query = 'select * from (select * from {0} order by date_time desc limit 10) dummy order by date_time asc;'.format(fieldname)
+                self.db.cursor.execute(query)
+                output = self.db.cursor.fetchall()
+                return output
+            else:
+                return False
+        except Exception as e:
+            print('[ERROR!]')
+            print(e)
+
+    def device_values(self, fieldname, deviceID):
+        try:
+            if self.authenticated:
+                query = 'select * from (select * from (select * from {0} where deviceID = "{1}") var1 order by date_time desc limit 10) dummy order by date_time asc;'.format(fieldname, deviceID)
+                self.db.cursor.execute(query)
+                output = self.db.cursor.fetchall()
+                return output
+            else:
+                return False
+
+        except Exception as e:
+            print('[ERROR!]')
+            print(e)
 
 #testing side for the class
 test = user("hellboy", "hello world")
 test.get_details()
 print(test.get_devices())
-print(test.dev_info("ARMS1112"))
+# print(test.dev_info("ARMS1112"))
+# print(test.field_values('Rosegarden'))
+print(test.device_values("Rosegarden", "ARMS12012"))
