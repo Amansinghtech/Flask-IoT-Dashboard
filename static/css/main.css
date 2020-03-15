@@ -1,0 +1,9 @@
+.ct-series-a .ct-line,
+.ct-series-a .ct-point {
+  stroke: #5b5ea6;
+}
+
+.ct-series-b .ct-line,
+.ct-series-b .ct-point {
+  stroke: green;
+}
