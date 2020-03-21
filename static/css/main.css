@@ -1,9 +1,21 @@
 .ct-series-a .ct-line,
 .ct-series-a .ct-point {
-  stroke: #5b5ea6;
+  stroke: red;
 }
 
 .ct-series-b .ct-line,
 .ct-series-b .ct-point {
+  stroke: skyblue;
+}
+
+.ct-series-c .ct-line,
+.ct-series-c .ct-point {
   stroke: green;
 }
+
+.ct-series-d .ct-line,
+.ct-series-d .ct-point {
+  stroke: rgb(255, 108, 55);
+}
+
+.ct-grid { stroke: white;  }

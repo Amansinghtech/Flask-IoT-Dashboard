@@ -11,6 +11,7 @@
   <!-- <meta http-equiv="refresh" content="5" > -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
   <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
   
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
@@ -79,7 +80,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container w3-white w3-hover-shadow w3-border-red w3-bottombar w3-padding-16">
         <div class="w3-left"><img src="/static/images/temperature.svg"></div>
         <div class="w3-right">
-          <h3>52</h3>
+          <h3  id = "card-temp">52</h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Temperature</h4>
@@ -89,7 +90,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container w3-white w3-hover-shadow w3-border-blue w3-bottombar w3-padding-16">
         <div class="w3-left"><img src="/static/images/grass.svg"></div>
         <div class="w3-right">
-          <h3>99</h3>
+          <h3 id = "card-moisture">99</h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Moisture</h4>
@@ -99,7 +100,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container w3-white w3-hover-shadow w3-border-teal w3-bottombar w3-padding-16">
         <div class="w3-left"><img src="/static/images/humidity.svg"></div>
         <div class="w3-right">
-          <h3>23</h3>
+          <h3 id ="card-humidity">23</h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Humidity</h4>
@@ -109,7 +110,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container w3-white w3-hover-shadow w3-border-orange w3-bottombar w3-padding-16">
         <div class="w3-left"><img src="/static/images/ecology.svg"></div>
         <div class="w3-right">
-          <h3>50</h3>
+          <h3 id = "card-light">50</h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Light Intensity</h4>
@@ -118,33 +119,33 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   </div>
 
 <div class="w3-panel w3-padding-large">
-  <div class="w3-container w3-white w3-card w3-hover-shadow w3-half w3-section w3-round-large">
+  <div class="w3-container w3-white w3-card w3-hover-shadow w3-section w3-round-large">
     <h3>
       Temperature
     </h3> 
-    <div class="ct-chart ct-series-a ct-major-sixth"></div>
+    <div class="ct-chart ct-series-a"></div>
     </div>
 
     
-    <div class="w3-container w3-white w3-card w3-hover-shadow w3-half w3-section w3-round-large">
+    <div class="w3-container w3-white w3-card w3-hover-shadow w3-section w3-round-large">
       <h3>
         Humidity
       </h3> 
-    <div class="ct-chart ct-series-a ct-major-sixth"></div>
+    <div class="ct2-chart ct-series-b "></div>
     </div>
     
-    <div class="w3-container w3-white w3-card w3-hover-shadow w3-half w3-section w3-round-large">
+    <div class="w3-container w3-white w3-card w3-hover-shadow w3-section w3-round-large">
       <h3>
         Moisture
       </h3> 
-    <div class="ct2-chart ct-series-b ct-major-sixth"></div>
+    <div class="ct3-chart ct-series-c "></div>
     </div>
 
-    <div class="w3-container w3-white w3-card w3-hover-shadow w3-half w3-section w3-round-large">
+    <div class="w3-container w3-white w3-card w3-hover-shadow w3-section w3-round-large">
       <h3>
         Light Intensity
       </h3> 
-    <div class="ct2-chart ct-series-b ct-major-sixth"></div>
+    <div class="ct4-chart ct-series-d "></div>
     </div>
 
 </div>

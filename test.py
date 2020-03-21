@@ -1,8 +1,8 @@
-import sys
+from random import choice
+import time
 
-print("Start Writing here: - ")
-user = sys.stdin.readlines()
-print(user)
+a = [i for i in range(0, 100, 5)]
 
-with open("sample.txt" ,"w") as file:
-    file.writelines(user)
+while 1:
+    print(choice(a))
+    time.sleep(1)
