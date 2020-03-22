@@ -179,3 +179,5 @@ function requestLight() {
 }
 
 requestTemp();
+
+var apikey = document.getElementById('apikey').value ;

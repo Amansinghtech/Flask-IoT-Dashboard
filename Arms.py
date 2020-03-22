@@ -1,15 +1,30 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, redirect, request
 import json
 from random import choice
 from datetime import datetime
-
 import person
-user = person.user('amansingh', 'aman11415')
-print("user auth")
-print(user.authenticated)
 
 app = Flask(__name__)
 
+logged_in = {}
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    error = ""
+    if request.method == 'POST':
+        user = person.user(request.form['username'], request.form['password'])
+        if user.authenticated:
+            logged_in[user.username] = {"object": user}
+            return redirect('/overview/{}/{}'.format(request.form['username'], user.api))
+        else:
+            error = "invalid Username or Passowrd"
+        # if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+        #     error = 'Invalid Credentials. Please try again.'
+        # else:
+        #     return redirect('/overview')
+
+    return render_template('Login.htm', error=error)
+    
 #this links is for device 1 
 @app.route('/device1', methods=["GET", "POST"])
 def Dashoboard():
@@ -31,21 +46,28 @@ def Dashoboard():
 def home():
     return render_template('home.htm', title='HOME - Landing Page')
 
-@app.route('/overview', methods=['GET', 'POST'])
-def overview():
+@app.route('/overview/<string:username>/<string:apikey>', methods=['GET', 'POST'])
+def overview(username, apikey):
     
-    user = {
-        "username" : "Aman Singh",
-        "image":"static/images/amanSingh.jpg"
-    }
+    global logged_in
 
-    devices = [
-        {"Dashboard" : "device1",
-        "deviceID": "Device1"
+    if username in logged_in and (logged_in[username]['object'].api == apikey):
+        user = {
+            "username" : username,
+            "image":"/static/images/amanSingh.jpg",
+            "api":apikey
         }
-    ]
-    return render_template('overview.htm', title='Overview', user=user, devices=devices)
+
+        devices = [
+            {"Dashboard" : "device1",
+            "deviceID": "Device1"
+            }
+        ]
+        return render_template('overview.htm', title='Overview', user=user, devices=devices)
     
+    else:
+        return redirect('/login')
+        
 #this location will get to the api setting
 @app.route('/apisettings', methods=['GET', 'POST'])
 def apisettings():
