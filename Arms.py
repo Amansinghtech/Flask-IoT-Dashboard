@@ -3,6 +3,7 @@ import json
 from random import choice
 from datetime import datetime
 import person
+import os, binascii
 
 app = Flask(__name__)
 
@@ -14,8 +15,9 @@ def login():
     if request.method == 'POST':
         user = person.user(request.form['username'], request.form['password'])
         if user.authenticated:
+            user.session_id = str(binascii.b2a_hex(os.urandom(15)))
             logged_in[user.username] = {"object": user}
-            return redirect('/overview/{}/{}'.format(request.form['username'], user.api))
+            return redirect('/overview/{}/{}'.format(request.form['username'], user.session_id))
         else:
             error = "invalid Username or Passowrd"
         # if request.form['username'] != 'admin' or request.form['password'] != 'admin':
@@ -46,16 +48,16 @@ def Dashoboard():
 def home():
     return render_template('home.htm', title='HOME - Landing Page')
 
-@app.route('/overview/<string:username>/<string:apikey>', methods=['GET', 'POST'])
-def overview(username, apikey):
+@app.route('/overview/<string:username>/<string:session>', methods=['GET', 'POST'])
+def overview(username, session):
     
     global logged_in
 
-    if username in logged_in and (logged_in[username]['object'].api == apikey):
+    if username in logged_in and (logged_in[username]['object'].session_id == session):
         user = {
             "username" : username,
             "image":"/static/images/amanSingh.jpg",
-            "api":apikey
+            "api": logged_in[username]["object"].api
         }
 
         devices = [
