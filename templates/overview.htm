@@ -9,14 +9,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- <meta http-equiv="refresh" content="5" > -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-  <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
   
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="/static/css/main.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js" integrity="sha256-8zyeSXm+yTvzUN1VgAOinFgaVFEFTyYzWShOy9w7WoQ=" crossorigin="anonymous"></script>
 
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
@@ -123,7 +122,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <h3>
       Temperature
     </h3> 
-    <div class="ct-chart ct-series-a"></div>
+    <canvas id="temperature" ></canvas>
     </div>
 
     
@@ -131,21 +130,21 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <h3>
         Humidity
       </h3> 
-    <div class="ct2-chart ct-series-b "></div>
+      <canvas id="humidity" ></canvas>
     </div>
     
     <div class="w3-container w3-white w3-card w3-hover-shadow w3-section w3-round-large">
       <h3>
         Moisture
       </h3> 
-    <div class="ct3-chart ct-series-c "></div>
+      <canvas id="moisture" ></canvas>
     </div>
 
     <div class="w3-container w3-white w3-card w3-hover-shadow w3-section w3-round-large">
       <h3>
         Light Intensity
       </h3> 
-    <div class="ct4-chart ct-series-d "></div>
+      <canvas id="light" ></canvas>
     </div>
 
 </div>

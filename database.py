@@ -58,6 +58,6 @@ class db:
             print("[ERROR!]")
             print(e)
 #test side
-mydb = db('aman', '192.168.56.102', 'hacker123', 'ARMS')
+# mydb = db('aman', '192.168.56.102', 'hacker123', 'ARMS')
 
 # mydb.update_values("nahidegi", "Rosegarden", "ARMS12012", 10, 10 ,10, 10)

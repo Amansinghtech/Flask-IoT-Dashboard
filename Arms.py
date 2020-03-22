@@ -3,8 +3,10 @@ import json
 from random import choice
 from datetime import datetime
 
-# import person
-# user = person.user("")
+import person
+user = person.user('amansingh', 'aman11415')
+print("user auth")
+print(user.authenticated)
 
 app = Flask(__name__)
 
@@ -105,4 +107,4 @@ def get_light(apikey):
     return jsonify(response)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port = "80", debug=True)

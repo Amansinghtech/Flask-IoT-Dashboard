@@ -1,8 +1,10 @@
-from random import choice
-import time
+from passlib.hash import sha512_crypt as sha
+password = sha.hash("sunny123")
+print(password)
+from database import db
 
-a = [i for i in range(0, 100, 5)]
+mydb = db('aman', '192.168.56.102', 'hacker123', 'ARMS')
+query = "update users set password = '{}' where username = 'sunnysingh'".format(password)
 
-while 1:
-    print(choice(a))
-    time.sleep(1)
+mydb.cursor.execute(query)
+mydb.db.commit()
