@@ -3,10 +3,6 @@ import hashlib
 from passlib.hash import sha512_crypt as sha
 from datetime import datetime
 
-# password = sha.hash("hello world")
-# print(password)
-
-# print(sha.verify("hello world", password))
 class user:
 
     def __init__(self, username, password):
