@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, redirect, request
-import json
+import json, database
 from random import choice
 from datetime import datetime
 import person
@@ -8,6 +8,11 @@ import os, binascii
 app = Flask(__name__)
 
 logged_in = {}
+api_loggers = {}
+mydb = database.db('aman', '192.168.56.102', 'hacker123', 'ARMS')
+
+#test api key aGFja2luZ2lzYWNyaW1lYXNmc2FmZnNhZnNhZmZzYQ==
+
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -20,15 +25,11 @@ def login():
             return redirect('/overview/{}/{}'.format(request.form['username'], user.session_id))
         else:
             error = "invalid Username or Passowrd"
-        # if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-        #     error = 'Invalid Credentials. Please try again.'
-        # else:
-        #     return redirect('/overview')
-
+       
     return render_template('Login.htm', error=error)
     
 #this links is for device 1 
-@app.route('/device1', methods=["GET", "POST"])
+@app.route('/device1/<string:username>/<string:session>', methods=["GET", "POST"])
 def Dashoboard():
     user = {
         "username" : "Aman Singh",
@@ -57,7 +58,8 @@ def overview(username, session):
         user = {
             "username" : username,
             "image":"/static/images/amanSingh.jpg",
-            "api": logged_in[username]["object"].api
+            "api": logged_in[username]["object"].api,
+            "session" : session
         }
 
         devices = [
@@ -71,20 +73,28 @@ def overview(username, session):
         return redirect('/login')
         
 #this location will get to the api setting
-@app.route('/apisettings', methods=['GET', 'POST'])
-def apisettings():
+@app.route('/apisettings/<string:username>/<string:session>', methods=['GET', 'POST'])
+def apisettings(username, session):
     
-    user = {
-        "username" : "Aman Singh",
-        "image":"static/images/amanSingh.jpg"
-    }
+    global logged_in
 
-    devices = [
-        {"Dashboard" : "device1",
-        "deviceID": "Device1"
+    if username in logged_in and (logged_in[username]['object'].session_id == session):
+        user = {
+            "username" : username,
+            "image":"/static/images/amanSingh.jpg",
+            "api": logged_in[username]["object"].api,
+            "session" : session
         }
-    ]
-    return render_template('api_settings.htm', title='API-Settings', user=user, devices=devices)
+
+        devices = [
+            {"Dashboard" : "device1",
+            "deviceID": "Device1"
+            }
+        ]
+        return render_template('api_settings.htm', title='API-Settings', user=user, devices=devices)
+    
+    else:
+        return redirect('/login')
 
 
 #this is the testing for api 
@@ -92,7 +102,112 @@ def apisettings():
 def apitest (apikey):
     return {"data":"working Fine Connected to the api server"}
 
+
+#get all the devices information from the user
+@app.route("/api/<string:apikey>/listdevices", methods=['GET', 'POST'])
+def listdevices(apikey):
+    global api_loggers
+    global mydb
+    if not(apikey in api_loggers):
+        try:
+            query = "select username from users where api_key = '{}'".format(apikey)
+            mydb.cursor.execute(query)
+            username = mydb.cursor.fetchall()
+            username = username[0][0]
+            apiuser = person.user(username, "dummy")
+            apiuser.authenticated = True
+            devices_list = apiuser.get_devices()
+            api_loggers[apikey] = {"object" : apiuser}
+            return jsonify(devices_list)
+        except Exception as e:
+            print (e)
+            return jsonify({"data":"Oops Looks like api is not correct"})
+    
+    else:
+        data = api_loggers[apikey]["object"].get_devices()
+        return jsonify (data)
+
 randlist = [i for i in range(0, 100)]
+
+@app.route('/api/<string:apikey>/deviceinfo/<string:deviceID>', methods=['GET', 'POST'])
+def device_info (apikey, deviceID):
+    global api_loggers
+    global mydb
+    if not(apikey in api_loggers):
+        try:
+            query = "select username from users where api_key = '{}'".format(apikey)
+            mydb.cursor.execute(query)
+            username = mydb.cursor.fetchall()
+            username = username[0][0]
+            apiuser = person.user(username, "dummy")
+            apiuser.authenticated = True
+            data = apiuser.dev_info(deviceID)
+            api_loggers[apikey] = {"object" : apiuser}
+            #this part is hard coded so remove after fixing the issue
+            data = list(data)
+            data[2] = "Rosegarden"
+            return jsonify(data)
+        except Exception as e:
+            print (e)
+            return jsonify({"data":"Oops Looks like api is not correct"})
+    
+    else:
+        data = api_loggers[apikey]["object"].dev_info(deviceID)
+
+        #this part is hard coded so remove after fixing the issue
+        data = list(data)
+        data[2] = "Rosegarden"
+        return jsonify (data)
+
+@app.route('/api/<string:apikey>/fieldstat/<string:fieldname>', methods=['GET', 'POST'])
+def fieldstat (apikey, fieldname):
+    
+    global api_loggers
+    global mydb
+    if not(apikey in api_loggers):
+        try:
+            query = "select username from users where api_key = '{}'".format(apikey)
+            mydb.cursor.execute(query)
+            username = mydb.cursor.fetchall()
+            username = username[0][0]
+            apiuser = person.user(username, "dummy")
+            apiuser.authenticated = True
+            data = apiuser.field_values(fieldname)
+            api_loggers[apikey] = {"object" : apiuser}
+            return jsonify(data)
+        except Exception as e:
+            print (e)
+            return jsonify({"data":"Oops Looks like api is not correct"})
+    
+    else:
+        data = api_loggers[apikey]["object"].field_values(fieldname)
+        return jsonify (data)
+
+
+@app.route('/api/<string:apikey>/devicestat/<string:fieldname>/<string:deviceID>', methods=['GET', 'POST'])
+def devicestat (apikey, fieldname, deviceID):
+    
+    global api_loggers
+    global mydb
+    if not(apikey in api_loggers):
+        try:
+            query = "select username from users where api_key = '{}'".format(apikey)
+            mydb.cursor.execute(query)
+            username = mydb.cursor.fetchall()
+            username = username[0][0]
+            apiuser = person.user(username, "dummy")
+            apiuser.authenticated = True
+            data = apiuser.device_values(fieldname, deviceID)
+            api_loggers[apikey] = {"object" : apiuser}
+            return jsonify(data)
+        except Exception as e:
+            print (e)
+            return jsonify({"data":"Oops Looks like api is not correct"})
+    
+    else:
+        data = api_loggers[apikey]["object"].device_values(fieldname, deviceID)
+        return jsonify (data)
+
 
 @app.route("/api/<string:apikey>/temperature", methods=["GET", "POST"])
 def get_temperature(apikey):
