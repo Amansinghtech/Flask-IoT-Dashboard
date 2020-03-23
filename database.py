@@ -21,6 +21,15 @@ class db:
         except Exception as e:
             print('[error] ' + e)
 
+    def get_apikeys(self):
+        query = 'select api_key from users'
+        self.cursor.execute(query)
+        output = self.cursor.fetchall()
+        dummy = []
+        for api in output:
+            dummy.append(api[0])
+        return dummy
+
     def add_user(self, username, password, first_name, last_name, email, phone_number, api_key):
         
         try:

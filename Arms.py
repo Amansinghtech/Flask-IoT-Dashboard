@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, redirect, request
-import json, database
+import json, database, base64
 from random import choice
 from datetime import datetime
 import person
@@ -208,6 +208,31 @@ def devicestat (apikey, fieldname, deviceID):
         data = api_loggers[apikey]["object"].device_values(fieldname, deviceID)
         return jsonify (data)
 
+@app.route('/api/<string:apikey>/update/<string:data>', methods=['GET','POST'])
+def update_values(apikey, data):
+    global mydb
+    try:
+        data = decode(data)
+        output = mydb.get_apikeys()
+        if apikey in output:
+            if (len(data) == 6) and (type(data) is list):
+                fieldname = data[0]
+                deviceID = data[1]
+                temp = data[2]
+                humidity = data[3]
+                moisture = data[4]
+                light = data[5]
+                mydb.update_values(apikey, fieldname, deviceID, temp, humidity, moisture, light)
+                return ("Values Updated")
+            else:
+                return "Data Decoding Error!"
+        else:
+            return "Api key invalid"
+
+    except Exception as e:
+        print (e)
+        return jsonify({"data":"Oops Looks like api is not correct"})
+
 
 @app.route("/api/<string:apikey>/temperature", methods=["GET", "POST"])
 def get_temperature(apikey):
@@ -244,6 +269,21 @@ def get_light(apikey):
     time = time.strftime("%H:%M:%S")
     response = [time, randData]
     return jsonify(response)
+
+
+def encode(data):
+    data = json.dumps(data)
+    message_bytes = data.encode('ascii')
+    base64_bytes = base64.b64encode(message_bytes)
+    base64_message = base64_bytes.decode('ascii')
+    return base64_message
+
+def decode(base64_message):
+    base64_bytes = base64_message.encode('ascii')
+    message_bytes = base64.b64decode(base64_bytes)
+    message = message_bytes.decode('ascii')
+    return json.loads(message)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port = "80", debug=True)
