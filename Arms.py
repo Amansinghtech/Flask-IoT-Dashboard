@@ -97,6 +97,50 @@ def apisettings(username, session):
         return redirect('/login')
 
 
+#this part is for the profile view
+@app.route('/profile/<string:username>/<string:session>', methods=['GET', 'POST'])
+def profile(username, session):
+    
+    global logged_in
+
+    if username in logged_in and (logged_in[username]['object'].session_id == session):
+        user = {
+            "username" : username,
+            "image":"/static/images/amanSingh.jpg",
+            "api": logged_in[username]["object"].api,
+            "session" : session,
+            "firstname": logged_in[username]["object"].first,
+            "lastname": logged_in[username]["object"].last,
+            "email":logged_in[username]["object"].email,
+            "phone":logged_in[username]["object"].phone,
+            "lastlogin":logged_in[username]["object"].last_login,
+        }
+
+        devices = [
+            {"Dashboard" : "device1",
+            "deviceID": "ARMS12012"
+            }
+        ]
+        return render_template('profile.htm', title='API-Settings', user=user, devices=devices)
+    
+    else:
+        return redirect('/login')
+
+
+@app.route('/logout/<string:username>/<string:session>', methods=['GET', 'POST'])
+def logout(username, session):
+    
+    global logged_in
+
+    if username in logged_in and (logged_in[username]['object'].session_id == session):
+        logged_in.pop(username)
+        # print("logged out")
+        return redirect('/')
+    else:
+        return redirect('/login')
+
+
+
 #this is the testing for api 
 @app.route("/api/<string:apikey>/test", methods=["GET", "POST"])
 def apitest (apikey):

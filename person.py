@@ -83,9 +83,11 @@ class user:
         try:
             
             if self.authenticated:
+                self.db.db.commit()
                 query = 'select * from Node where deviceID="{0}";'.format(deviceID)
                 self.db.cursor.execute(query)
                 output = self.db.cursor.fetchall()
+                print(output)
                 return output[0]
             else:
                 return False
@@ -114,6 +116,7 @@ class user:
                 query = 'select * from (select * from (select * from {0} where deviceID = "{1}") var1 order by date_time desc limit 10) dummy order by date_time asc;'.format(fieldname, deviceID)
                 self.db.cursor.execute(query)
                 output = self.db.cursor.fetchall()
+                print(output)
                 return output
             else:
                 return False

@@ -21,16 +21,20 @@ randlist = [i for i in range(0, 100)]
 devlist = ['ARMS1112','ARMS12012','ARMS22212']
 
 while 1:
-    mydata = ['Rosegarden', choice(devlist), choice(randlist), choice(randlist), choice(randlist), choice(randlist)]
-    a = encode(mydata)
-    url = 'http://127.0.0.1/api/aGFja2luZ2lzYWNyaW1lYXNmc2FmZnNhZnNhZmZzYQ==/update/{}'.format(a)
-    print("[data]: "+ str(mydata))
-    print("[Encoded Value]: "+ a)
-    print("[url]: "+ url)
-    response = urllib.request.urlopen(url)
-    html = response.read()
-    print("[output]: " + str(html))
-    time.sleep(2)
+    try:
+        mydata = ['Rosegarden', 'ARMS12012', choice(randlist), choice(randlist), choice(randlist), choice(randlist)]
+        a = encode(mydata)
+        url = 'http://127.0.0.1/api/aGFja2luZ2lzYWNyaW1lYXNmc2FmZnNhZnNhZmZzYQ==/update/{}'.format(a)
+        response = urllib.request.urlopen(url)
+        print("[data]: "+ str(mydata))
+        print("[Encoded Value]: "+ a)
+        print("[url]: "+ url)
+        html = response.read()
+        print("[output]: " + str(html))
+        time.sleep(2)
+    except:
+        print("Website Not online")
+        time.sleep(2)
 # mydict = {"name": "Aman Singh", "Age":18}
 # a = encode(mydict)
 # print(a)

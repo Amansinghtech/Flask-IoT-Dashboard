@@ -1,4 +1,37 @@
 var temperature = document.getElementById('temperature');
+var apikey = document.getElementById('apikey').value ;
+var devicename = "ARMS12012";
+
+function getdevice(){
+    var requests = $.get('/api/' + apikey + '/deviceinfo/' + devicename);
+    
+    var tm = requests.done(function (result){
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        addData(temp_chart, time, result[3]);
+        addData(humid_chart, time, result[4]);
+        addData(moist_chart, time, result[5]);
+        addData(light_chart, time, result[6]);
+        document.getElementById("card-temp").innerHTML = result[3];
+        document.getElementById("card-moisture").innerHTML = result[4];
+        document.getElementById("card-humidity").innerHTML = result[5];
+        document.getElementById("card-light").innerHTML = result[6];
+        if (couter >= 10 ){
+            removeData(temp_chart);
+            removeData(humid_chart);
+            removeData(moist_chart);
+            removeData(light_chart);
+        }
+        couter++;
+
+        setTimeout(getdevice, 2000);
+        
+    
+    });
+    
+}
+
+//temperature chart object created 
 var temp_chart = new Chart(temperature, {
     type: 'line',
     data: {
@@ -117,67 +150,6 @@ function removeData(chart) {
     chart.update();
 }
 
-var couter = 0;   
-function requestTemp() {
-    var requests = $.get('/api/kuchnhi/temperature');
-    var tm = requests.done(function (result){
-        
-        addData(temp_chart, result[0], result[1]);
-        if (couter >= 10) {
-            removeData(temp_chart);
-        }
-        couter++;
-        
-        document.getElementById("card-temp").innerHTML = result[1];
-        
-         setTimeout(requestTemp, 2000);
-        setTimeout(requestHumidity, 2000);
-        setTimeout(requestMoisture, 2000);
-        setTimeout(requestLight, 2000);
-    });
-}
+var couter = 0; 
 
-function requestHumidity() {
-    var requests = $.get('/api/kuchnhi/moisture');
-    var tm = requests.done(function (result){
-        addData(humid_chart, result[0], result[1]);
-        if (couter >= 11) {
-            removeData(humid_chart);
-        }
-        
-        document.getElementById("card-moisture").innerHTML = result[1];
-
-    });
-}
-
-
-function requestMoisture() {
-    var requests = $.get('/api/kuchnhi/humidity');
-    var tm = requests.done(function (result){
-        addData(moist_chart, result[0], result[1]);
-        if (couter >= 11) {
-            removeData(moist_chart);
-        }
-        
-        document.getElementById("card-humidity").innerHTML = result[1];
-
-    });
-}
-
-
-function requestLight() {
-    var requests = $.get('/api/kuchnhi/light');
-    var tm = requests.done(function (result){
-        addData(light_chart, result[0], result[1]);
-        if (couter >= 11) {
-            removeData(light_chart);
-        }
-        
-        document.getElementById("card-light").innerHTML = result[1];
-
-    });
-}
-
-requestTemp();
-
-var apikey = document.getElementById('apikey').value ;
+getdevice();

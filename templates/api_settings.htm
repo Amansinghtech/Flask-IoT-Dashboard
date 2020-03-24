@@ -26,6 +26,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
   <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
   <span class="w3-bar-item w3-right">ARMS</span>
+  <input type="hidden" id="apikey" value="{{ user.api }}">
 </div>
 
 <!-- Sidebar/menu -->
@@ -47,18 +48,18 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   </div>
   <div class="w3-bar-block">
     <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-white w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-    <a href="/overview/{{ user.username }}/{{ user.session }}" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Overview</a>
+    <a href="/overview/{{ user.username }}/{{ user.session }}" class="w3-bar-item w3-button w3-padding "><i class="fa fa-users fa-fw"></i>  Overview</a>
 
     {% for device in devices %}
 
-    <a href="{{ device.Dashboard }}" class="w3-bar-item w3-button w3-padding"> <img src="/static/images/bio-sensor.svg"> {{ device.deviceID }}</a>
+    <!-- <a href="{{ device.Dashboard }}" class="w3-bar-item w3-button w3-padding"> <img src="/static/images/bio-sensor.svg"> {{ device.deviceID }}</a> -->
     
     {% endfor %}
 
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Field device Controls</a>
-    <a href="/apisettings/{{ user.username }}/{{ user.session }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  API settings</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Device Manager</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Profile Settings</a><br><br>
+    <!-- <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Field device Controls</a> -->
+    <a href="/apisettings/{{ user.username }}/{{ user.session }}" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  API settings</a>
+    <!-- <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Device Manager</a> -->
+    <a href="/profile/{{ user.username }}/{{ user.session }}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Profile Settings</a><br><br>
   </div>
 </nav>
 
@@ -80,7 +81,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <table>
     <tr >
       <td >
-        <h3 id="apikey" class="w3-text-grey w3-border w3-padding">XXXX XXXX XXXX XXXX XXXX </h3>
+        <h3 id="apikey_holder" class="w3-text-grey w3-border w3-padding">XXXX XXXX XXXX XXXX XXXX </h3>
       </td>
       <td style="padding: 40px;">
         <input type="button" value="Show" id="tooglebtn" onclick="show_hide()" class="w3-button w3-teal w3-hover-black" >
@@ -95,19 +96,19 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <div class="w3-row">
       <div class="w3-container w3-third">
         <h5 class="w3-bottombar w3-border-green">Contributers</h5>
-        <p>Aman Singh</p>
-        <p>Rica Ghosh</p>
-        <p>Deepak Yadu</p>
-        <p>Khyati banjare</p>
-        <p>Arwind</p>
+        <h6>Aman Singh</h6>
+        <h6>Rica Ghosh</h6>
+        <h6>Deepak Yadu</h6>
+        <h6>Khyati banjare</h6>
+        <h6>Arwind</h6>
       </div>
       <div class="w3-container w3-third">
         <h5 class="w3-bottombar w3-border-red">Guides</h5>
-        <p>All faculties Of BIT Raipur</p>
+        <h6>All faculties Of BIT Raipur</h6>
       </div>
       <div class="w3-container w3-third">
         <h5 class="w3-bottombar w3-border-orange">References</h5>
-        <p>Google.com</p>
+        <h6>Google.com</h6>
       </div>
     </div>
   </div>
@@ -138,14 +139,15 @@ function w3_close() {
   overlayBg.style.display = "none";
 }
 
-document.getElementById("apikey").innerHTML = "XXXX XXXX XXXX XXXX XXXX";
+document.getElementById("apikey_holder").innerHTML = "XXXX XXXX XXXX XXXX XXXX";
 
 function show_hide(){
-  var x = document.getElementById("apikey");
+  var x = document.getElementById("apikey_holder");
   var btn = document.getElementById("togglebtn");
+  var actual_key = document.getElementById('apikey').value;
   
   if (x.innerHTML === "XXXX XXXX XXXX XXXX XXXX") {
-    x.innerHTML = "AAab stew dyse sgad gdas";
+    x.innerHTML = actual_key;
   } else {
     x.innerHTML = "XXXX XXXX XXXX XXXX XXXX";
   }
