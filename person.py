@@ -116,7 +116,7 @@ class user:
                 query = 'select * from (select * from (select * from {0} where deviceID = "{1}") var1 order by date_time desc limit 10) dummy order by date_time asc;'.format(fieldname, deviceID)
                 self.db.cursor.execute(query)
                 output = self.db.cursor.fetchall()
-                print(output)
+                # print(output)
                 return output
             else:
                 return False
