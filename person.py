@@ -6,7 +6,7 @@ from datetime import datetime
 class user:
 
     def __init__(self, username, password):
-        self.db = db('aman', '192.168.56.102', 'hacker123', 'ARMS')
+        self.db = db('aman', '127.0.0.1', 'hacker123', 'ARMS')
         self.username = username 
         self.secret = password
         self.authenticated = False

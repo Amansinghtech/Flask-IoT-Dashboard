@@ -4,7 +4,7 @@ class db:
     
     def __init__(self, user, host, password, database):
         try:
-            self.db = mysql.connector.connect(user=user, host=host, password=password, database=database)
+            self.db = mysql.connector.connect(user=user, host=host, password=password, database=database,  auth_plugin='mysql_native_password')
             self.cursor = self.db.cursor()
             print ('[result] Database connected!')
             

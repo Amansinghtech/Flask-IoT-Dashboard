@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 logged_in = {}
 api_loggers = {}
-mydb = database.db('aman', '192.168.56.102', 'hacker123', 'ARMS')
+mydb = database.db('aman', '127.0.0.1', 'hacker123', 'ARMS')
 
 #test api key aGFja2luZ2lzYWNyaW1lYXNmc2FmZnNhZnNhZmZzYQ==
 
